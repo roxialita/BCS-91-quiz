@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>শুদ্ধ বানান MCQ — ৫০</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+Bengali:wght@400;600;700&family=Noto+Sans+Bengali:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f3ede0;
+    --paper-line:#d8cdb2;
+    --ink:#2b2620;
+    --ink-soft:#5b5344;
+    --stamp:#8f2d28;
+    --stamp-dark:#6e211d;
+    --ok:#3a6b4a;
+    --ok-bg:#e4efe3;
+    --bad:#8f2d28;
+    --bad-bg:#f6e6e3;
+    --gold:#a9852f;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    background-image:
+      repeating-linear-gradient(transparent, transparent 38px, var(--paper-line) 39px);
+    color:var(--ink);
+    font-family:'Noto Sans Bengali','Noto Serif Bengali',serif;
+    padding:0 0 80px;
+  }
+  header{
+    position:relative;
+    padding:36px 20px 26px;
+    text-align:center;
+    border-bottom:3px double var(--stamp);
+    background:linear-gradient(180deg, rgba(255,255,255,0.35), transparent);
+  }
+  header h1{
+    font-family:'Noto Serif Bengali',serif;
+    font-weight:700;
+    font-size:1.9rem;
+    margin:0 0 6px;
+    letter-spacing:0.5px;
+  }
+  header p.sub{
+    margin:0;
+    color:var(--ink-soft);
+    font-size:0.95rem;
+  }
+  .stamp{
+    position:absolute;
+    top:18px; right:18px;
+    border:2px solid var(--stamp);
+    color:var(--stamp);
+    border-radius:50%;
+    width:74px;height:74px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:0.72rem;
+    font-weight:600;
+    transform:rotate(-9deg);
+    text-align:center;
+    line-height:1.15;
+    opacity:0.85;
+  }
+  #progress-bar-wrap{
+    position:sticky; top:0; z-index:20;
+    background:var(--paper);
+    border-bottom:1px solid var(--paper-line);
+    padding:10px 20px;
+    display:flex; align-items:center; gap:12px;
+  }
+  #progress-track{
+    flex:1; height:8px; background:#e2d8c0; border-radius:4px; overflow:hidden;
+  }
+  #progress-fill{
+    height:100%; width:0%; background:var(--stamp); transition:width 0.25s ease;
+  }
+  #progress-label{ font-size:0.85rem; color:var(--ink-soft); white-space:nowrap; }
+
+  main{ max-width:720px; margin:0 auto; padding:24px 18px; }
+
+  .q-card{
+    background:rgba(255,255,255,0.55);
+    border:1px solid var(--paper-line);
+    border-left:4px solid var(--gold);
+    border-radius:6px;
+    padding:18px 18px 16px;
+    margin-bottom:16px;
+  }
+  .q-num{
+    font-family:'Noto Serif Bengali',serif;
+    font-weight:700;
+    color:var(--stamp);
+    margin-right:6px;
+  }
+  .q-text{
+    font-size:1.08rem;
+    font-weight:600;
+    margin:0 0 12px;
+  }
+  .opts{ display:flex; flex-direction:column; gap:8px; }
+  .opt{
+    display:flex; align-items:center; gap:10px;
+    padding:9px 12px;
+    border:1px solid var(--paper-line);
+    border-radius:5px;
+    cursor:pointer;
+    background:rgba(255,255,255,0.4);
+    transition:background 0.15s, border-color 0.15s;
+  }
+  .opt:hover{ background:rgba(169,133,47,0.08); }
+  .opt input{ accent-color:var(--stamp); width:16px; height:16px; flex:none; }
+  .opt.selected{ border-color:var(--stamp); background:rgba(143,45,40,0.08); }
+  .opt-label{ font-weight:600; color:var(--ink-soft); }
+
+  .opt.correct{ background:var(--ok-bg); border-color:var(--ok); }
+  .opt.incorrect{ background:var(--bad-bg); border-color:var(--bad); }
+  .mark{ margin-left:auto; font-weight:700; font-size:0.95rem; }
+  .mark.ok{ color:var(--ok); }
+  .mark.bad{ color:var(--bad); }
+
+  #submit-wrap{
+    position:sticky; bottom:0;
+    padding:14px 18px 20px;
+    background:linear-gradient(180deg, transparent, var(--paper) 30%);
+    display:flex; justify-content:center;
+  }
+  #submit-btn{
+    font-family:'Noto Serif Bengali',serif;
+    font-size:1.05rem; font-weight:700;
+    background:var(--stamp);
+    color:#f3ede0;
+    border:none; border-radius:30px;
+    padding:13px 36px;
+    cursor:pointer;
+    box-shadow:0 3px 0 var(--stamp-dark);
+  }
+  #submit-btn:active{ transform:translateY(2px); box-shadow:0 1px 0 var(--stamp-dark); }
+  #submit-btn:disabled{ opacity:0.5; cursor:not-allowed; box-shadow:none; }
+
+  #result-panel{
+    display:none;
+    max-width:720px; margin:0 auto 20px;
+    padding:22px;
+    text-align:center;
+    border:2px double var(--stamp);
+    border-radius:8px;
+    background:rgba(255,255,255,0.6);
+  }
+  #result-panel h2{
+    font-family:'Noto Serif Bengali',serif;
+    margin:0 0 6px;
+    font-size:1.6rem;
+  }
+  #result-panel p{ margin:4px 0; color:var(--ink-soft); }
+  #retry-btn{
+    margin-top:14px;
+    background:none;
+    border:1.5px solid var(--stamp);
+    color:var(--stamp);
+    border-radius:24px;
+    padding:9px 24px;
+    font-weight:600;
+    cursor:pointer;
+    font-family:'Noto Sans Bengali',sans-serif;
+  }
+  #retry-btn:hover{ background:var(--stamp); color:var(--paper); }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ transition:none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="stamp">রিভিশন<br>৫০</div>
+  <h1>শুদ্ধ বানান — ৫০টি MCQ</h1>
+  <p class="sub">BCS · NTRCA · Primary · ব্যাংক নিয়োগ পরীক্ষার জন্য</p>
+</header>
+
+<div id="progress-bar-wrap">
+  <div id="progress-track"><div id="progress-fill"></div></div>
+  <div id="progress-label">০ / ৫০ উত্তর দেওয়া হয়েছে</div>
+</div>
+
+<main id="quiz-main"></main>
+
+<div id="submit-wrap">
+  <button id="submit-btn">উত্তরপত্র জমা দিন</button>
+</div>
+
+<div id="result-panel">
+  <h2 id="result-score"></h2>
+  <p id="result-msg"></p>
+  <button id="retry-btn">আবার চেষ্টা করি</button>
+</div>
+
+<script>
+const bn = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+function toBn(n){ return String(n).split('').map(d => bn[+d] ?? d).join(''); }
+
+const questions = [
+["মুমূর্ষু","মুমুর্ষু","মুমূর্ষ","মুমুর্ষ",0],
+["কৃতজ্ঞ","কৃতঙ্গ","কৃতজ্ঞ্য","কৃতঙ্গ্য",0],
+["ঊর্ধ্ব","উর্ধ্ব","ঊর্দ্ধ","উর্দ্ধ",0],
+["সান্ত্বনা","স্বান্তনা","সান্তনা","স্বান্ত্বনা",0],
+["দারিদ্র্য","দারিদ্র","দারিদ্রতা","দারিদ্র্যতা",0],
+["প্রতিযোগিতা","প্রতিযোগীতা","প্রতিযোগীতা","প্রতিযোগীতা",0],
+["আকাঙ্ক্ষা","আকাঙ্খা","আকাংক্ষা","আকাঙ্খ",0],
+["শুশ্রূষা","শুশ্রুষা","শুশ্রূসা","শুশ্রুষ",0],
+["বিভীষিকা","বিভিষিকা","বিভীষীকা","বিভিষীকা",0],
+["সৌন্দর্য","সৌন্দর্য্য","সৌন্দর্জ","সৌন্দর",0],
+["মনীষী","মনিষী","মণীষী","মণিষী",0],
+["ঋণী","রিণী","ঋনী","রিনী",0],
+["সান্নিধ্য","সানিধ্য","সান্নিধ","সানিধ",0],
+["স্বতঃস্ফূর্ত","স্বতস্ফূর্ত","স্বতঃস্ফুর্ত","স্বতস্ফুর্ত",0],
+["নিরীক্ষণ","নিরিক্ষণ","নিরীক্ষন","নিরিক্ষন",0],
+["অদ্যাবধি","অদ্যবধি","অদ্যাবদি","অদ্যবদি",0],
+["ঔৎসুক্য","উৎসুক্য","ঔৎসুক","উৎসুক্য",0],
+["স্বায়ত্তশাসন","স্বায়ত্বশাসন","সায়ত্তশাসন","স্বায়ত্তসাশন",0],
+["মুমুক্ষু","মুমূক্ষু","মুমূক্ষ","মুমুক্ষ",0],
+["অন্তঃসত্ত্বা","অন্তঃসত্বা","অন্তসত্ত্বা","অন্তঃসত্তা",0],
+["উচ্ছৃঙ্খল","উচ্ছৃংখল","উচ্ছৃঙ্খল","উচ্ছৃঙ্খল্",0],
+["প্রজ্জ্বলিত","প্রজ্বলিত","প্রজ্জলিত","প্রজ্ঝলিত",0],
+["দুর্বিষহ","দুর্বিসহ","দুর্বীষহ","দুর্বিষহ্",0],
+["যথাশীঘ্র","যথাশিঘ্র","যথাশীঘ্রই","যথাশিগ্র",0],
+["নিঃসন্দেহ","নিঃসন্ধেহ","নিশংসন্দেহ","নিঃসন্দেহ্",0],
+["মৈত্রী","মৈত্রি","মৈত্রীী","মৈত্রী্য",0],
+["স্বাক্ষর","সাক্খর","স্বাক্ষর্","স্বাক্ষর",0],
+["অভ্যর্থনা","অভ্যার্থনা","অভ্যর্থণা","অভ্যার্থণা",0],
+["আকস্মিক","আকস্মিক্","আকস্মীক","আকস্মিকী",0],
+["দুর্নীতি","দূর্নীতি","দুর্নিতি","দূর্নিতি",0],
+["পরাধীন","পরাধিন","পরাদীন","পরাধীণ",0],
+["অভ্যুদয়","অভ্যূদয়","অভুদয়","অভ্যুদয়ী",0],
+["অভিনিবেশ","অবিনিবেশ","অভিনিবেষ","অবিনিবেষ",0],
+["প্রতিকূল","প্রতিকুল","প্রতীকূল","প্রতীকুল",0],
+["সমীচীন","সমিচীন","সমীচিন","সমিচিন",0],
+["ঔজ্জ্বল্য","উজ্জ্বল্য","ঔজ্বল্য","উজ্জল্য",0],
+["মন্ত্রিসভা","মন্ত্রীসভা","মন্ত্রিসভ","মন্ত্রীসভ",0],
+["স্বত্ব","সত্ত্ব","স্বত্ত্ব","সত্ব",0],
+["তত্ত্বাবধান","তত্তাবধান","তত্বাবধান","তত্ত্বাবদাণ",0],
+["অস্তিত্ব","অস্তীত্ব","অস্তিত্ত্ব","অস্তিত্ব্য",0],
+["দৃষ্টান্ত","দৃস্টান্ত","দৃষ্টান্ত","দৃষ্টান্তু",0],
+["ণত্ব","নত্ব","ণত্ত্ব","নত্ত্ব",0],
+["ষত্ব","ষত্ত্ব","শত্ব","ষত্‌ব",0],
+["মুমূর্ষু","মুমূর্ষ","মুমুর্ষ","মুমুর্ষু",0],
+["পৈতৃক","পৈত্রীক","পৈত্রিক","পৈত্রিক",0],
+["নৈপুণ্য","নৈপুন্য","নৈপূণ্য","নৈপুণ",0],
+["ঔপনিবেশিক","উপনিবেশিক","ঔপনিবেশীক","উপনিবেশীক",0],
+["পারিপার্শ্বিক","পারিপার্শিক","পারিপার্শ্বীক","পারিপার্শিকী",0],
+["সামঞ্জস্য","সামঞ্জস্স্য","সামঞ্জশ্য","সামঞ্জস",0],
+["দায়িত্ব","দায়ীত্ব","দায়িত্ব্ব","দাইত্ব",0],
+];
+
+const letters = ['A','B','C','D'];
+const answers = new Array(questions.length).fill(null);
+let submitted = false;
+
+const main = document.getElementById('quiz-main');
+const progressFill = document.getElementById('progress-fill');
+const progressLabel = document.getElementById('progress-label');
+const submitBtn = document.getElementById('submit-btn');
+const resultPanel = document.getElementById('result-panel');
+const resultScore = document.getElementById('result-score');
+const resultMsg = document.getElementById('result-msg');
+
+questions.forEach((q, qi) => {
+  const [a,b,c,d] = q;
+  const opts = [a,b,c,d];
+  const card = document.createElement('div');
+  card.className = 'q-card';
+  card.id = 'card-' + qi;
+
+  const qText = document.createElement('p');
+  qText.className = 'q-text';
+  qText.innerHTML = `<span class="q-num">${toBn(qi+1)}.</span> কোন বানানটি শুদ্ধ?`;
+  card.appendChild(qText);
+
+  const optsWrap = document.createElement('div');
+  optsWrap.className = 'opts';
+
+  opts.forEach((optText, oi) => {
+    const label = document.createElement('label');
+    label.className = 'opt';
+    label.id = `opt-${qi}-${oi}`;
+    label.innerHTML = `
+      <input type="radio" name="q${qi}" value="${oi}">
+      <span class="opt-label">${letters[oi]})</span>
+      <span class="opt-text">${optText}</span>
+      <span class="mark"></span>
+    `;
+    label.querySelector('input').addEventListener('change', () => {
+      if (submitted) return;
+      answers[qi] = oi;
+      optsWrap.querySelectorAll('.opt').forEach(o => o.classList.remove('selected'));
+      label.classList.add('selected');
+      updateProgress();
+    });
+    optsWrap.appendChild(label);
+  });
+
+  card.appendChild(optsWrap);
+  main.appendChild(card);
+});
+
+function updateProgress(){
+  const answered = answers.filter(a => a !== null).length;
+  progressFill.style.width = (answered / questions.length * 100) + '%';
+  progressLabel.textContent = `${toBn(answered)} / ${toBn(questions.length)} উত্তর দেওয়া হয়েছে`;
+}
+
+submitBtn.addEventListener('click', () => {
+  if (submitted) return;
+  submitted = true;
+  submitBtn.disabled = true;
+
+  let score = 0;
+  questions.forEach((q, qi) => {
+    const correct = q[4];
+    const chosen = answers[qi];
+    if (chosen === correct) score++;
+
+    for (let oi = 0; oi < 4; oi++){
+      const optEl = document.getElementById(`opt-${qi}-${oi}`);
+      const mark = optEl.querySelector('.mark');
+      optEl.querySelector('input').disabled = true;
+      if (oi === correct){
+        optEl.classList.add('correct');
+        mark.textContent = '✓ শুদ্ধ';
+        mark.classList.add('ok');
+      } else if (oi === chosen){
+        optEl.classList.add('incorrect');
+        mark.textContent = '✗';
+        mark.classList.add('bad');
+      }
+    }
+  });
+
+  resultPanel.style.display = 'block';
+  resultScore.textContent = `স্কোর: ${toBn(score)} / ${toBn(questions.length)}`;
+  const pct = Math.round(score / questions.length * 100);
+  let msg = '';
+  if (pct >= 90) msg = 'চমৎকার! তুমি পরীক্ষার জন্য প্রস্তুত।';
+  else if (pct >= 70) msg = 'ভালো করেছ, আরেকবার রিভিশন দিলে আরও শক্ত হবে।';
+  else if (pct >= 50) msg = 'মোটামুটি, ভুল করা শব্দগুলো আলাদা করে মুখস্থ করো।';
+  else msg = 'চিন্তা নেই, বারবার প্র্যাকটিস করলেই শুদ্ধ বানান আয়ত্তে চলে আসবে।';
+  resultMsg.textContent = msg + ` (${toBn(pct)}%)`;
+  resultPanel.scrollIntoView({behavior:'smooth', block:'center'});
+});
+
+document.getElementById('retry-btn').addEventListener('click', () => {
+  location.reload();
+});
+</script>
+
+</body>
+</html>
