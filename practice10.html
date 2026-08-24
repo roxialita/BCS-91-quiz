@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>প্র্যাকটিস কুইজ — ১০টি</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  body{font-family:'Noto Sans Bengali',sans-serif;background:#f3ede0;margin:0;padding:20px;color:#2b2620;}
+  h1{font-size:1.4rem;text-align:center;}
+  .q{background:#fff;border:1px solid #ddd;border-radius:8px;padding:14px;margin-bottom:12px;}
+  .q p{font-weight:600;margin:0 0 8px;}
+  label{display:block;padding:6px 8px;border-radius:5px;cursor:pointer;}
+  label:hover{background:#f0e8d5;}
+  .correct{background:#dff0d8;}
+  .incorrect{background:#f8d7da;}
+  button{display:block;margin:16px auto;background:#8f2d28;color:#fff;border:none;padding:12px 30px;border-radius:24px;font-size:1rem;}
+  #score{text-align:center;font-weight:700;font-size:1.2rem;margin-top:10px;}
+</style>
+</head>
+<body>
+<h1>প্র্যাকটিস কুইজ — ১০টি প্রশ্ন</h1>
+<div id="quiz"></div>
+<button id="submit">জমা দিন</button>
+<div id="score"></div>
+<script>
+const bn=['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+const toBn=n=>String(n).split('').map(d=>bn[+d]??d).join('');
+const qs=[
+["মুমূর্ষু","মুমুর্ষু","মুমূর্ষ","মুমুর্ষ",0],
+["কৃতজ্ঞ","কৃতঙ্গ","কৃতজ্ঞ্য","কৃতঙ্গ্য",0],
+["ঊর্ধ্ব","উর্ধ্ব","ঊর্দ্ধ","উর্দ্ধ",0],
+["সান্ত্বনা","স্বান্তনা","সান্তনা","স্বান্ত্বনা",0],
+["দারিদ্র্য","দারিদ্র","দারিদ্রতা","দারিদ্র্যতা",0],
+["আকাঙ্ক্ষা","আকাঙ্খা","আকাংক্ষা","আকাঙ্খ",0],
+["শুশ্রূষা","শুশ্রুষা","শুশ্রূসা","শুশ্রুষ",0],
+["বিভীষিকা","বিভিষিকা","বিভীষীকা","বিভিষীকা",0],
+["মনীষী","মনিষী","মণীষী","মণিষী",0],
+["দায়িত্ব","দায়ীত্ব","দায়িত্ব্ব","দাইত্ব",0],
+];
+const letters=['A','B','C','D'];
+const ans=new Array(qs.length).fill(null);
+const quiz=document.getElementById('quiz');
+qs.forEach((q,i)=>{
+  const div=document.createElement('div');div.className='q';
+  div.innerHTML=`<p>${toBn(i+1)}. কোনটি শুদ্ধ?</p>`;
+  q.slice(0,4).forEach((opt,oi)=>{
+    const lbl=document.createElement('label');
+    lbl.id=`o${i}-${oi}`;
+    lbl.innerHTML=`<input type="radio" name="q${i}" value="${oi}"> ${letters[oi]}) ${opt}`;
+    lbl.querySelector('input').addEventListener('change',()=>ans[i]=oi);
+    div.appendChild(lbl);
+  });
+  quiz.appendChild(div);
+});
+document.getElementById('submit').addEventListener('click',()=>{
+  let score=0;
+  qs.forEach((q,i)=>{
+    const correct=q[4];
+    if(ans[i]===correct)score++;
+    document.getElementById(`o${i}-${correct}`).classList.add('correct');
+    if(ans[i]!==null&&ans[i]!==correct)document.getElementById(`o${i}-${ans[i]}`).classList.add('incorrect');
+  });
+  document.getElementById('score').textContent=`স্কোর: ${toBn(score)} / ${toBn(qs.length)}`;
+});
+</script>
+</body>
+</html>
