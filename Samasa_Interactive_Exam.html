@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>সমাস — ২০টি গুরুত্বপূর্ণ প্রশ্ন</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f4f7fb;color:#172033;font-family:Arial,"Noto Sans Bengali",sans-serif}
+.container{max-width:850px;margin:auto;padding:18px}.header{background:#fff;border-radius:18px;padding:22px;text-align:center;box-shadow:0 4px 16px #00000012;margin-bottom:14px}
+h1{margin:0 0 6px;font-size:26px}.sub{color:#667085;font-size:14px}
+.info{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}.info input{width:100%;padding:12px;border:1px solid #d8dee9;border-radius:10px;font-size:16px}
+.q{background:#fff;border:1px solid #e1e6ef;border-radius:14px;padding:15px;margin:10px 0;box-shadow:0 2px 8px #00000008}
+.qt{font-weight:700;line-height:1.5;margin-bottom:10px}.num{display:inline-flex;width:30px;height:30px;align-items:center;justify-content:center;border-radius:9px;background:#e9efff;margin-right:7px}
+label{display:block;border:1px solid #dfe4ec;border-radius:10px;padding:10px;margin:7px 0;cursor:pointer}
+label:hover{background:#f7f9fc}label.selected{background:#eaf1ff;border-color:#5577dd}
+.actions{display:flex;gap:10px;margin:16px 0}.btn{border:0;border-radius:12px;padding:13px 20px;font-size:16px;font-weight:700;cursor:pointer}.submit{background:#315bdc;color:#fff}.reset{background:#e9edf5;color:#172033}
+.result{display:none;background:#fff;border-radius:16px;padding:20px;margin:14px 0;box-shadow:0 4px 16px #00000012}.score{font-size:36px;font-weight:800;text-align:center}.center{text-align:center}
+.wrong{margin-top:14px}.wrong div{padding:9px 0;border-bottom:1px solid #eee;font-size:14px}
+@media(max-width:600px){.container{padding:10px}.info{grid-template-columns:1fr}h1{font-size:21px}.actions{position:sticky;bottom:0;background:#f4f7fb;padding:10px 0}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header"><h1>সমাস — ২০টি গুরুত্বপূর্ণ প্রশ্ন</h1><div class="sub">Interactive Exam • প্রতিটি প্রশ্নে একটি উত্তর নির্বাচন করো</div></div>
+<div class="info"><input id="name" placeholder="শিক্ষার্থীর নাম"><input id="date" type="date"></div>
+<form id="quiz"></form>
+<div class="actions"><button class="btn submit" type="button" onclick="submitQuiz()">Submit Exam</button><button class="btn reset" type="button" onclick="resetQuiz()">আবার শুরু</button></div>
+<div id="result" class="result"></div>
+</div>
+<script>
+const qs=[
+["‘সমাস’ শব্দের অর্থ কী?",["সংক্ষেপণ","বিশ্লেষণ","সংযোজন","বিয়োজন"],0],
+["সমাসবদ্ধ/সমাসনিষ্পন্ন পদটির নাম কী?",["পরপদ","পূর্বপদ","সমস্যমান পদ","সমস্তপদ"],3],
+["তৎপুরুষ সমাসে কোন পদ প্রধান?",["অন্যপদ","উভয়পদ","পরপদ","পূর্বপদ"],2],
+["বিশেষণের সঙ্গে বিশেষ্যের যে সমাস হয়, তার নাম কী?",["কর্মধারয়","দ্বিগু","দ্বন্দ্ব","তৎপুরুষ"],0],
+["‘সিংহাসন’ কোন সমাস?",["নিমিত্তার্থে চতুর্থী","ষষ্ঠী তৎপুরুষ","মধ্যপদলোপী কর্মধারয়","নিত্য সমাস"],2],
+["‘দম্পতি’ কোন সমাস?",["তৎপুরুষ","কর্মধারয়","দ্বিগু","দ্বন্দ্ব"],3],
+["‘জন্মান্ধ’ কোন সমাস?",["পঞ্চমী তৎপুরুষ","কর্মধারয়","দ্বন্দ্ব","ষষ্ঠী তৎপুরুষ"],0],
+["‘মুজিববর্ষ’ কোন সমাস?",["তৎপুরুষ","দ্বিগু","মধ্যপদলোপী কর্মধারয়","দ্বন্দ্ব"],2],
+["‘কর পল্লবের ন্যায়’ ব্যাসবাক্যটি কোন সমাসের উদাহরণ?",["ষষ্ঠী তৎপুরুষ","দ্বিগু","সাধারণ কর্মধারয়","উপমিত কর্মধারয়"],3],
+["‘পৌরসভা’ কোন তৎপুরুষ সমাস?",["তৃতীয়া","ষষ্ঠী","দ্বিতীয়া","চতুর্থী"],1],
+["‘ত্রিভুজ’ কোন সমাস?",["দ্বন্দ্ব","দ্বিগু","কর্মধারয়","তৎপুরুষ"],1],
+["‘ষড়ঋতু’ কোন সমাস?",["তৎপুরুষ","কর্মধারয়","দ্বন্দ্ব","দ্বিগু"],3],
+["‘গ্রামান্তর’ কোন সমাস?",["কর্মধারয়","দ্বন্দ্ব","দ্বিগু","নিত্য সমাস"],3],
+["‘কালসাপ’ কোন সমাস?",["নিত্য সমাস","ষষ্ঠী তৎপুরুষ","কর্মধারয়","দ্বন্দ্ব"],0],
+["কোন সমাসে সাধারণত ব্যাসবাক্য হয় না?",["দ্বন্দ্ব","তৎপুরুষ","নিত্য সমাস","কর্মধারয়"],2],
+["‘সংবাদপত্র’ কোন সমাস?",["ষষ্ঠী তৎপুরুষ","নিত্য সমাস","দ্বন্দ্ব","মধ্যপদলোপী কর্মধারয়"],0],
+["‘রাজর্ষি’ কোন সমাস?",["দ্বন্দ্ব","ষষ্ঠী তৎপুরুষ","দ্বিগু","সাধারণ কর্মধারয়"],0],
+["‘খেচর’ কোন সমাসের উদাহরণ?",["দ্বন্দ্ব","কর্মধারয়","দ্বিগু","উপপদ তৎপুরুষ"],3],
+["কোনটি নিত্য সমাস?",["কালসাপ","নীলকমল","মা-বাবা","রাজপুত্র"],0],
+["যে সমাসে পূর্ব পদের বিভক্তির লোপ হয় না, তাকে কী বলে?",["অলুক সমাস","দ্বন্দ্ব","দ্বিগু","নিত্য"],0]
+];
+const letters=["ক","খ","গ","ঘ"];
+const quiz=document.getElementById("quiz");
+qs.forEach((q,i)=>{
+ let div=document.createElement("div");div.className="q";
+ div.innerHTML=`<div class="qt"><span class="num">${i+1}</span>${q[0]}</div>`+
+ q[1].map((o,j)=>`<label onclick="selectOpt(this)"><input type="radio" name="q${i}" value="${j}"> ${letters[j]}. ${o}</label>`).join("");
+ quiz.appendChild(div);
+});
+function selectOpt(el){[...el.parentElement.querySelectorAll("label")].forEach(x=>x.classList.remove("selected"));el.classList.add("selected")}
+function submitQuiz(){
+ let score=0,answered=0,wrong=[];
+ qs.forEach((q,i)=>{
+  const el=document.querySelector(`input[name="q${i}"]:checked`);
+  if(el){answered++;let v=+el.value;if(v===q[2])score++;else wrong.push(`<div><b>${i+1}.</b> তোমার উত্তর: ${q[1][v]}<br>সঠিক উত্তর: <b>${q[1][q[2]]}</b></div>`)}
+ });
+ const r=document.getElementById("result");
+ r.style.display="block";
+ r.innerHTML=`<div class="center"><div class="score">${score} / 20</div><b>Answered:</b> ${answered} &nbsp; | &nbsp; <b>Correct:</b> ${score} &nbsp; | &nbsp; <b>Wrong:</b> ${answered-score}</div>`+
+ (wrong.length?`<div class="wrong"><b>ভুল উত্তরগুলো:</b>${wrong.join("")}</div>`:`<div class="center" style="margin-top:12px">🎉 সব উত্তর সঠিক!</div>`);
+ r.scrollIntoView({behavior:"smooth"});
+}
+function resetQuiz(){document.getElementById("quiz").reset();document.querySelectorAll("label").forEach(x=>x.classList.remove("selected"));document.getElementById("result").style.display="none";window.scrollTo({top:0,behavior:"smooth"})}
+document.getElementById("date").value=new Date().toISOString().slice(0,10);
+</script>
+</body>
+</html>
