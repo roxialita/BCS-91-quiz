@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>সমাস — ৩০টি গুরুত্বপূর্ণ MCQ</title>
+<style>
+*{box-sizing:border-box}
+body{font-family:"Noto Sans Bengali","Noto Sans",Arial,sans-serif;background:#f4f6f8;color:#202124;margin:0;padding:16px}
+.container{max-width:800px;margin:auto;background:#fff;padding:20px;border-radius:14px;box-shadow:0 2px 12px #0001}
+h1{font-size:25px;margin:0 0 6px;text-align:center}
+.subtitle{text-align:center;color:#666;font-size:14px;margin-bottom:16px}
+.name{margin-bottom:18px}.name label{font-weight:700;display:block;margin-bottom:6px}
+input[type=text]{width:100%;padding:11px;border:1px solid #ccc;border-radius:8px;font-size:16px}
+.q{border:1px solid #ddd;border-radius:10px;padding:13px;margin:10px 0;background:#fff}
+.qt{font-weight:700;line-height:1.55;margin-bottom:7px}
+.option{display:block;padding:8px 6px;border-radius:7px;cursor:pointer;line-height:1.5}
+.option:hover{background:#f1f3f4}
+.option input{margin-right:7px}
+button{width:100%;padding:13px;border:0;border-radius:9px;background:#222;color:#fff;font-size:17px;font-weight:700;cursor:pointer;margin-top:15px}
+.result{margin-top:18px;padding:15px;border-radius:10px;background:#f7f7f7;border:1px solid #ddd}
+.wrong{margin-top:10px;padding:10px;border-left:4px solid #d33;background:#fff}
+.correct{margin-top:10px;padding:10px;border-left:4px solid #29944a;background:#fff}
+hr{border:0;border-top:1px solid #ddd;margin:14px 0}
+@media(max-width:480px){body{padding:8px}.container{padding:12px}h1{font-size:21px}.q{padding:11px}}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>সমাস — ৩০টি গুরুত্বপূর্ণ MCQ</h1>
+<div class="subtitle">BCS + NTRCA + Primary + ১১–২০ গ্রেড | অব্যয়ীভাব ও বহুব্রীহি বাদ</div>
+
+<div class="name">
+<label for="studentName">নাম</label>
+<input id="studentName" type="text" placeholder="আপনার নাম লিখুন">
+</div>
+
+<form id="quizForm"></form>
+<button type="button" id="submitBtn">Submit / পরীক্ষা শেষ করুন</button>
+<div id="result"></div>
+</div>
+
+<script>
+const questions=[
+["সমাসবদ্ধ পদকে কী বলে?",["সমস্তপদ","সমস্যমান পদ","পূর্বপদ","পরপদ"],0,"সমাসের ফলে যে নতুন পদ গঠিত হয় তাকে সমস্তপদ বলে।"],
+["পূর্বপদ ও পরপদ উভয়ের অর্থের প্রাধান্য কোন সমাসে?",["দ্বন্দ্ব","কর্মধারয়","তৎপুরুষ","দ্বিগু"],0,"দ্বন্দ্ব সমাসে উভয় পদের অর্থই প্রধান থাকে।"],
+["পরপদের অর্থই প্রধান—কোন সমাসে?",["দ্বন্দ্ব","কর্মধারয়","তৎপুরুষ","দ্বিগু"],2,"তৎপুরুষ সমাসে পরপদের অর্থ প্রধান হয়।"],
+["বিশেষণের সঙ্গে বিশেষ্যের যে সমাস হয়—",["দ্বন্দ্ব","কর্মধারয়","তৎপুরুষ","দ্বিগু"],1,"বিশেষণ ও বিশেষ্যের সমাস কর্মধারয় সমাসের একটি প্রধান রূপ।"],
+["কর্মধারয় সমাসে কোন পদের অর্থ প্রধান?",["পূর্বপদ","পরপদ","উভয় পদ","অন্যপদ"],1,"কর্মধারয়ে পরপদ বা বিশেষ্য পদের অর্থ প্রধান।"],
+["রাজপুত্র কোন সমাস?",["দ্বন্দ্ব","কর্মধারয়","তৎপুরুষ","দ্বিগু"],2,"রাজার পুত্র—এখানে সম্বন্ধ বোঝায়, তাই তৎপুরুষ।"],
+["নীলকমল কোন সমাস?",["দ্বন্দ্ব","কর্মধারয়","তৎপুরুষ","দ্বিগু"],1,"নীল যে কমল—বিশেষণ ও বিশেষ্যের সমাস, তাই কর্মধারয়।"],
+["মা-বাবা কোন সমাস?",["দ্বন্দ্ব","কর্মধারয়","তৎপুরুষ","দ্বিগু"],0,"মা ও বাবা—উভয় পদের অর্থ প্রধান, তাই দ্বন্দ্ব।"],
+["গৃহপ্রবেশ কোন সমাস?",["দ্বন্দ্ব","কর্মধারয়","তৎপুরুষ","দ্বিগু"],2,"গৃহে প্রবেশ—বিভক্তি লোপ পেয়েছে, তাই তৎপুরুষ।"],
+["রাজার পুত্র—এর সমাসবদ্ধ রূপ কোনটি?",["রাজপুত্র","রাজপুত্রতা","রাজপুরুষ","রাজসন্তান"],0,"রাজার পুত্র-এর সমাসবদ্ধ রূপ রাজপুত্র।"],
+["নীল আকাশ কোন সমাস?",["দ্বন্দ্ব","কর্মধারয়","তৎপুরুষ","দ্বিগু"],1,"নীল যে আকাশ—বিশেষণ ও বিশেষ্যের সমাস।"],
+["গৃহকর্ম কোন সমাস?",["দ্বন্দ্ব","কর্মধারয়","তৎপুরুষ","দ্বিগু"],2,"গৃহের কর্ম—সম্বন্ধ বোঝায়, তাই তৎপুরুষ।"],
+["স্বর্ণমুকুট কোন সমাস?",["দ্বন্দ্ব","কর্মধারয়","তৎপুরুষ","দ্বিগু"],1,"স্বর্ণের মতো/স্বর্ণবর্ণ মুকুট অর্থে কর্মধারয় হিসেবে ব্যবহৃত হয়।"],
+["জীবনমরণ কোন সমাস?",["দ্বন্দ্ব","কর্মধারয়","তৎপুরুষ","দ্বিগু"],0,"জীবন ও মরণ—দুই পদের অর্থই প্রধান।"],
+["রাত্রিদিন কোন সমাস?",["দ্বন্দ্ব","কর্মধারয়","তৎপুরুষ","দ্বিগু"],0,"রাত্রি ও দিন—উভয় পদের অর্থ প্রধান।"],
+["ধনসম্পদ কোন সমাস?",["দ্বন্দ্ব","কর্মধারয়","তৎপুরুষ","দ্বিগু"],0,"ধন ও সম্পদ—দুই পদের অর্থই প্রধান।"],
+["জমা-খরচের সঠিক ব্যাসবাক্য কোনটি?",["জমার খরচ","জমা ও খরচ","জমা থেকে খরচ","জমা যে খরচ"],1,"জমা ও খরচ—উভয় পদের সমান প্রাধান্য থাকায় এটি দ্বন্দ্বের ব্যাসবাক্য।"],
+["“নীল যে পদ্ম”—এর সমাসবদ্ধ রূপ কোনটি?",["নীলপদ্ম","পদ্মনীল","নীলপদ","নীলকমলতা"],0,"নীল যে পদ্ম—সমাসবদ্ধ রূপ নীলপদ্ম।"],
+["ত্রিফলা কোন সমাস?",["দ্বন্দ্ব","কর্মধারয়","তৎপুরুষ","দ্বিগু"],3,"তিন ফলের সমাহার বোঝায়; সংখ্যাবাচক পূর্বপদযুক্ত সমাহার দ্বিগু সমাস।"],
+["পঞ্চবটি কোন সমাস?",["দ্বন্দ্ব","কর্মধারয়","তৎপুরুষ","দ্বিগু"],3,"পাঁচ বটের সমাহার বোঝায়, তাই দ্বিগু সমাস।"],
+["দশদিক কোন সমাস?",["দ্বন্দ্ব","কর্মধারয়","তৎপুরুষ","দ্বিগু"],3,"দশ দিকের সমাহার বোঝায়, তাই দ্বিগু সমাস।"],
+["“গৃহে প্রবেশ”—এর সমাসবদ্ধ রূপ কোনটি?",["গৃহপ্রবেশ","প্রবেশগৃহ","গৃহবাস","গৃহকর্ম"],0,"গৃহে প্রবেশ থেকে বিভক্তি লোপ পেয়ে গৃহপ্রবেশ হয়েছে।"],
+["“শোকে আহত”—এর সমাসবদ্ধ রূপ কোনটি?",["শোকাহত","আহতশোক","শোকআঘাত","শোকমুক্ত"],0,"শোকে আহত—শোকাহত সমাসবদ্ধ পদ।"],
+["“হাতে খড়ি”—এর সমাসবদ্ধ রূপ কোনটি?",["হাতেখড়ি","খড়িহাত","হাতখড়ি","হাতকাজ"],0,"হাতে খড়ি-এর প্রচলিত সমাসবদ্ধ রূপ হাতেখড়ি।"],
+["“ভয় থেকে মুক্ত”—এর সমাসবদ্ধ রূপ কোনটি?",["ভয়মুক্ত","মুক্তভয়","ভয়হীনতা","ভয়বিহীন"],0,"ভয় থেকে মুক্ত অর্থে ভয়মুক্ত সমাসবদ্ধ পদ।"],
+["“জল পান”—এর সমাসবদ্ধ রূপ কোনটি?",["জলপান","পানজল","জলীয়পান","জলপানী"],0,"জল পান থেকে জলপান সমাসবদ্ধ পদ হয়।"],
+["“মহান যে কীর্তি”—এর সমাসবদ্ধ রূপ কোনটি?",["মহাকীর্তি","কীর্তিমহান","মহানকীর্তি","কীর্তিগান"],0,"মহান যে কীর্তি—মহাকীর্তি কর্মধারয় সমাসের উদাহরণ।"],
+["“মহান যে নবী”—এর সমাসবদ্ধ রূপ কোনটি?",["মহানবী","নবীমহান","মহাননবী","নবীশ্রেষ্ঠ"],0,"মহান যে নবী—মহানবী কর্মধারয় সমাসের উদাহরণ।"],
+["“সিংহের ন্যায় পুরুষ” অর্থে সিংহপুরুষ কোন সমাস?",["দ্বন্দ্ব","কর্মধারয়","তৎপুরুষ","দ্বিগু"],1,"সিংহের ন্যায় পুরুষ—উপমান ও উপমেয়ের সম্পর্কযুক্ত কর্মধারয়।"],
+["“সদ্ যে ব্যয়”—এর সমাসবদ্ধ রূপ সদ্ব্যয় কোন সমাস?",["দ্বন্দ্ব","কর্মধারয়","তৎপুরুষ","দ্বিগু"],1,"সদ্ যে ব্যয়—বিশেষণ ও বিশেষ্যের সমাস, তাই কর্মধারয়।"]
+];
+
+const form=document.getElementById("quizForm");
+questions.forEach((q,i)=>{
+ const box=document.createElement("div");
+ box.className="q";
+ box.innerHTML=`<div class="qt">${i+1}. ${q[0]}</div>`+
+ q[1].map((o,j)=>`<label class="option"><input type="radio" name="q${i}" value="${j}"> ${String.fromCharCode(65+j)}. ${o}</label>`).join("");
+ form.appendChild(box);
+});
+
+document.getElementById("submitBtn").addEventListener("click",()=>{
+ let score=0,answered=0,html="";
+ questions.forEach((q,i)=>{
+   const selected=form.querySelector(`input[name="q${i}"]:checked`);
+   if(selected){
+     answered++;
+     const v=Number(selected.value);
+     if(v===q[2]) score++;
+     else html+=`<div class="wrong"><b>${i+1}. ${q[0]}</b><br>আপনার উত্তর: ${q[1][v]}<br>সঠিক উত্তর: <b>${q[1][q[2]]}</b><br>${q[3]}</div>`;
+   }
+ });
+ const name=document.getElementById("studentName").value.trim()||"নাম দেওয়া হয়নি";
+ let result=`<div class="result"><b>ফলাফল</b><br>নাম: ${name}<br><b>স্কোর: ${score} / 30</b><br>উত্তর দিয়েছেন: ${answered}টি | বাদ: ${30-answered}টি`;
+ if(html) result+=`<hr><b>ভুল প্রশ্নগুলোর সঠিক উত্তর:</b>${html}`;
+ else result+=`<div class="correct">দারুণ! কোনো ভুল উত্তর নেই।</div>`;
+ result+=`</div>`;
+ document.getElementById("result").innerHTML=result;
+ window.scrollTo({top:document.getElementById("result").offsetTop-10,behavior:"smooth"});
+});
+</script>
+</body>
+</html>
