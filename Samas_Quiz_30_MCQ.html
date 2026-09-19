@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>সমাস মডেল টেস্ট — ৩০টি MCQ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&family=Noto+Serif+Bengali:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1F2A44;
+    --muted:#5B6579;
+    --paper:#F1F4F9;
+    --card:#FFFFFF;
+    --line:#D5DBE7;
+    --accent:#2F4B9B;
+    --accent-soft:#E4EAFA;
+    --ok:#12805C;
+    --ok-soft:#DDF3EA;
+    --bad:#B3261E;
+    --bad-soft:#FBE4E2;
+    --warn:#8A5A00;
+    --body:"Hind Siliguri","Noto Sans Bengali","Kalpurush","SolaimanLipi",system-ui,sans-serif;
+    --display:"Noto Serif Bengali","Hind Siliguri","Kalpurush",serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.65}
+  .wrap{max-width:760px;margin:0 auto;padding:20px 16px 90px}
+
+  header.top{padding:18px 0 8px}
+  header.top h1{font-family:var(--display);font-size:clamp(26px,6vw,36px);line-height:1.3;margin:0 0 6px;font-weight:700}
+  header.top p{margin:0;color:var(--muted)}
+
+  .who{margin:18px 0 6px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+  .who label{display:block;font-weight:600;margin-bottom:6px}
+  .who input{width:100%;font:inherit;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink)}
+  .who input:focus-visible,.opt input:focus-visible+span.mark,button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+  .rules{margin:10px 0 0;color:var(--muted);font-size:15px}
+
+  .bar{position:sticky;top:0;z-index:5;background:var(--ink);color:#fff;margin:14px -16px 16px;padding:10px 16px;display:flex;align-items:center;gap:14px}
+  .bar .stat{display:flex;flex-direction:column;line-height:1.2}
+  .bar .stat small{opacity:.75;font-size:12.5px}
+  .bar .stat b{font-size:19px;font-weight:600}
+  .bar .prog{flex:1;height:8px;background:rgba(255,255,255,.22);border-radius:99px;overflow:hidden}
+  .bar .prog i{display:block;height:100%;width:0;background:#8FB0FF;transition:width .25s}
+  .bar.low .timer{color:#FFB4AB}
+
+  .q{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--line);border-radius:10px;padding:16px 16px 12px;margin:0 0 14px;min-width:0}
+  .q.answered{border-left-color:var(--accent)}
+  .q.right{border-left-color:var(--ok)}
+  .q.wrong{border-left-color:var(--bad)}
+  .q legend{padding:0;float:left;width:100%;margin-bottom:10px}
+  .q .n{display:inline-block;min-width:2.1em;font-weight:600;color:var(--accent)}
+  .q .text{font-weight:500}
+  .q .focus{display:block;font-family:var(--display);font-size:clamp(28px,7.5vw,38px);line-height:1.35;margin:6px 0 2px 0;font-weight:700}
+  .q fieldset{border:0;margin:0;padding:0;min-width:0}
+  .opts{clear:both;display:grid;gap:8px;margin-top:6px}
+  @media(min-width:560px){.opts{grid-template-columns:1fr 1fr}}
+  .opt{display:flex;position:relative;cursor:pointer}
+  .opt input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+  .opt span.mark{display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;background:#fff;transition:background .12s,border-color .12s}
+  .opt span.mark::before{content:"";flex:none;width:18px;height:18px;border-radius:50%;border:2px solid #98A2B8;background:#fff}
+  .opt:hover span.mark{border-color:var(--accent)}
+  .opt input:checked+span.mark{background:var(--accent-soft);border-color:var(--accent)}
+  .opt input:checked+span.mark::before{border-color:var(--accent);background:radial-gradient(circle,var(--accent) 45%,#fff 50%)}
+  .locked .opt{cursor:default}
+  .locked .opt:hover span.mark{border-color:var(--line)}
+  .opt.is-right span.mark{background:var(--ok-soft);border-color:var(--ok)}
+  .opt.is-right span.mark::before{border-color:var(--ok);background:var(--ok)}
+  .opt.is-wrong span.mark{background:var(--bad-soft);border-color:var(--bad)}
+  .opt.is-wrong span.mark::before{border-color:var(--bad);background:var(--bad)}
+  .exp{margin:12px 0 4px;padding:10px 12px;background:#F6F8FC;border-radius:8px;font-size:15.5px;color:#2E3850}
+  .exp b{color:var(--ok)}
+  .exp .skip{color:var(--warn);font-weight:600}
+
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+  button{font:inherit;font-weight:600;border:0;border-radius:10px;padding:13px 22px;cursor:pointer}
+  .primary{background:var(--accent);color:#fff}
+  .primary:hover{background:#263F85}
+  .ghost{background:#fff;color:var(--ink);border:1.5px solid var(--line)}
+  .ghost:hover{border-color:var(--accent)}
+
+  .result{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:22px 18px;margin:8px 0 18px;text-align:center}
+  .result h2{font-family:var(--display);font-size:clamp(22px,5vw,28px);margin:0 0 4px}
+  .result .score{font-family:var(--display);font-size:clamp(46px,14vw,72px);line-height:1.1;font-weight:700;color:var(--accent);margin:6px 0}
+  .result .score small{font-size:.38em;color:var(--muted);font-weight:600}
+  .result .split{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;color:var(--muted);margin:6px 0 4px}
+  .result .split b{color:var(--ink)}
+  .result .msg{margin:10px 0 0}
+  .result .actions{justify-content:center}
+  .hidden{display:none !important}
+  .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:99px;font-size:15px;opacity:0;pointer-events:none;transition:opacity .2s}
+  .toast.show{opacity:1}
+  footer{color:var(--muted);font-size:14px;margin-top:26px}
+
+  @media print{
+    .bar,.actions,.who input,.toast{display:none !important}
+    body{background:#fff}
+    .q{break-inside:avoid}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none !important;scroll-behavior:auto !important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1>সমাস মডেল টেস্ট</h1>
+    <p>৩০টি MCQ — BCS, প্রাইমারি, NTRCA ও ১১তম–২০তম গ্রেডের চাকরির পরীক্ষার ধাঁচে</p>
+  </header>
+
+  <section class="who" id="whoBox">
+    <label for="name">পরীক্ষার্থীর নাম</label>
+    <input id="name" type="text" placeholder="আপনার নাম লিখুন" autocomplete="name">
+    <p class="rules">সময় ৩০ মিনিট। প্রতিটি প্রশ্নের একটি সঠিক উত্তর। জমা দেওয়ার পর সঠিক উত্তর ও ব্যাখ্যা দেখা যাবে।</p>
+  </section>
+
+  <div class="bar" id="bar" role="status" aria-live="off">
+    <div class="stat"><small>বাকি সময়</small><b class="timer" id="timer">৩০:০০</b></div>
+    <div class="prog" aria-hidden="true"><i id="progFill"></i></div>
+    <div class="stat"><small>উত্তর দেওয়া</small><b id="answered">০/৩০</b></div>
+  </div>
+
+  <section class="result hidden" id="result" aria-live="polite">
+    <h2 id="resName">ফলাফল</h2>
+    <div class="score" id="resScore"></div>
+    <div class="split">
+      <span>সঠিক <b id="resRight"></b></span>
+      <span>ভুল <b id="resWrong"></b></span>
+      <span>উত্তর দেননি <b id="resSkip"></b></span>
+      <span>সময় লেগেছে <b id="resTime"></b></span>
+    </div>
+    <p class="msg" id="resMsg"></p>
+    <div class="actions">
+      <button class="primary" id="btnCopy" type="button">ফলাফল কপি করুন</button>
+      <button class="ghost" id="btnWrong" type="button">শুধু ভুলগুলো দেখুন</button>
+      <button class="ghost" id="btnAgain" type="button">আবার দিন</button>
+    </div>
+  </section>
+
+  <main id="quiz"></main>
+
+  <div class="actions" id="submitRow">
+    <button class="primary" id="btnSubmit" type="button">উত্তর জমা দিন</button>
+  </div>
+
+  <footer>প্রশ্নগুলো সমাস অধ্যায়ের বহুল আসা প্রশ্নের ধাঁচে তৈরি। নিজের ব্যাকরণ বইয়ের সঙ্গে মিলিয়ে নিন।</footer>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- ডেটা ---------- */
+const DATA = [
+  {q:"‘সমাস’ শব্দের অর্থ কী?",
+   o:["সংক্ষেপণ","বিস্তার","সন্ধান","সংযোজন"],a:"সংক্ষেপণ",
+   e:"সমাস মানে সংক্ষেপণ। একাধিক পদ মিলে একটি নতুন পদ (সমস্তপদ) তৈরি হয়।"},
+  {q:"সমাসবদ্ধ পদকে কী বলে?",
+   o:["সমস্তপদ","ব্যাসবাক্য","পূর্বপদ","পরপদ"],a:"সমস্তপদ",
+   e:"সমাসের ফলে যে নতুন পদ তৈরি হয় তা সমস্তপদ।"},
+  {q:"সমস্তপদের অর্থ ভেঙে যে বাক্যে প্রকাশ করা হয় তাকে কী বলে?",
+   o:["ব্যাসবাক্য","সমস্তবাক্য","উপবাক্য","অনুবাদ"],a:"ব্যাসবাক্য",
+   e:"ব্যাসবাক্যকে বিগ্রহবাক্যও বলে। যেমন: রাজার পুত্র = রাজপুত্র।"},
+  {q:"‘মা-বাবা’ কোন সমাস?",w:"মা-বাবা",
+   o:["দ্বন্দ্ব","কর্মধারয়","দ্বিগু","নিত্য সমাস"],a:"দ্বন্দ্ব",
+   e:"মা ও বাবা। দুটি পদেরই অর্থ প্রধান, তাই দ্বন্দ্ব।"},
+  {q:"দ্বন্দ্ব সমাসে কোন পদের অর্থ প্রধান?",
+   o:["উভয় পদের","কেবল পূর্বপদের","কেবল পরপদের","সংখ্যাবাচক পদের"],a:"উভয় পদের",
+   e:"দ্বন্দ্ব সমাসে পূর্বপদ ও পরপদ দুটিরই অর্থ প্রধান থাকে।"},
+  {q:"‘রাম-লক্ষ্মণ’ কোন ধরনের দ্বন্দ্ব সমাস?",w:"রাম-লক্ষ্মণ",
+   o:["ইতরেতর দ্বন্দ্ব","সমাহার দ্বন্দ্ব","বিকল্প দ্বন্দ্ব","অলুক দ্বন্দ্ব"],a:"ইতরেতর দ্বন্দ্ব",
+   e:"রাম ও লক্ষ্মণ। দুটি পদ ‘ও’ দিয়ে যুক্ত, তাই ইতরেতর দ্বন্দ্ব।"},
+  {q:"‘দুধে-ভাতে’ কোন সমাস?",w:"দুধে-ভাতে",
+   o:["অলুক দ্বন্দ্ব","ইতরেতর দ্বন্দ্ব","সমাহার দ্বন্দ্ব","ষষ্ঠী তৎপুরুষ"],a:"অলুক দ্বন্দ্ব",
+   e:"‘দুধে’ ও ‘ভাতে’-র সপ্তমী বিভক্তি (এ) লোপ পায়নি, তাই অলুক দ্বন্দ্ব।"},
+  {q:"‘পঞ্চবটী’ কোন সমাস?",w:"পঞ্চবটী",
+   o:["দ্বিগু","দ্বন্দ্ব","কর্মধারয়","নিত্য সমাস"],a:"দ্বিগু",
+   e:"পঞ্চ (পাঁচ) বটের সমাহার = পঞ্চবটী। সংখ্যাবাচক পূর্বপদ, সমাহার অর্থ, তাই দ্বিগু।"},
+  {q:"‘শতাব্দী’ শব্দের ব্যাসবাক্য কোনটি?",w:"শতাব্দী",
+   o:["শত অব্দের সমাহার","শত অব্দ","শত বছরের ব্যবধান","শত ও অব্দ"],a:"শত অব্দের সমাহার",
+   e:"শত অব্দের সমাহার = শতাব্দী। এটি দ্বিগু সমাস।"},
+  {q:"সংখ্যাবাচক শব্দ পূর্বপদ হয়ে সমাহার বা সমষ্টি বোঝালে কোন সমাস হয়?",
+   o:["দ্বিগু","দ্বন্দ্ব","কর্মধারয়","প্রাদি সমাস"],a:"দ্বিগু",
+   e:"সমাহার অর্থে সংখ্যাবাচক পূর্বপদযুক্ত সমাস হলো দ্বিগু।"},
+  {q:"‘চৌরাস্তা’ কোন সমাস?",w:"চৌরাস্তা",
+   o:["দ্বিগু","দ্বন্দ্ব","উপপদ তৎপুরুষ","নিত্য সমাস"],a:"দ্বিগু",
+   e:"চার রাস্তার সমাহার = চৌরাস্তা।"},
+  {q:"‘নীলপদ্ম’ কোন সমাস?",w:"নীলপদ্ম",
+   o:["কর্মধারয়","ষষ্ঠী তৎপুরুষ","দ্বিগু","দ্বন্দ্ব"],a:"কর্মধারয়",
+   e:"নীল যে পদ্ম = নীলপদ্ম। বিশেষণ ও বিশেষ্য একই বস্তুকে বোঝাচ্ছে, তাই কর্মধারয়।"},
+  {q:"যে সমাসে পূর্বপদ ও পরপদ একই বস্তুকে বোঝায় (অভেদ) এবং পরপদের অর্থ প্রধান থাকে, সেটি কোন সমাস?",
+   o:["কর্মধারয়","দ্বন্দ্ব","দ্বিগু","নিত্য সমাস"],a:"কর্মধারয়",
+   e:"বিশেষ্য-বিশেষণ বা দুই পদের অভেদ সম্পর্কে কর্মধারয় সমাস হয়।"},
+  {q:"‘তুষারশুভ্র’ কোন সমাস?",w:"তুষারশুভ্র",
+   o:["উপমান কর্মধারয়","উপমিত কর্মধারয়","রূপক কর্মধারয়","মধ্যপদলোপী কর্মধারয়"],a:"উপমান কর্মধারয়",
+   e:"তুষারের ন্যায় শুভ্র। যার সঙ্গে তুলনা (উপমান = তুষার) সেটি আগে বসেছে।"},
+  {q:"‘পুরুষসিংহ’ কোন সমাস?",w:"পুরুষসিংহ",
+   o:["উপমিত কর্মধারয়","উপমান কর্মধারয়","রূপক কর্মধারয়","মধ্যপদলোপী কর্মধারয়"],a:"উপমিত কর্মধারয়",
+   e:"পুরুষ সিংহের ন্যায়। উপমেয় (পুরুষ) আগে এবং উপমান (সিংহ) পরে বসেছে।"},
+  {q:"‘মনমাঝি’ কোন সমাস?",w:"মনমাঝি",
+   o:["রূপক কর্মধারয়","উপমান কর্মধারয়","উপমিত কর্মধারয়","ষষ্ঠী তৎপুরুষ"],a:"রূপক কর্মধারয়",
+   e:"মনরূপ মাঝি। উপমেয় ও উপমানের অভেদ কল্পনা করা হয়েছে, তাই রূপক কর্মধারয়।"},
+  {q:"‘সিংহাসন’ কোন সমাস?",w:"সিংহাসন",
+   o:["মধ্যপদলোপী কর্মধারয়","রূপক কর্মধারয়","ষষ্ঠী তৎপুরুষ","দ্বিগু"],a:"মধ্যপদলোপী কর্মধারয়",
+   e:"সিংহ চিহ্নিত আসন = সিংহাসন। ব্যাসবাক্যের মাঝের পদ (চিহ্নিত) লোপ পেয়েছে।"},
+  {q:"‘শাকভাত’ কোন সমাস?",w:"শাকভাত",
+   o:["মধ্যপদলোপী কর্মধারয়","ইতরেতর দ্বন্দ্ব","দ্বিগু","নঞ তৎপুরুষ"],a:"মধ্যপদলোপী কর্মধারয়",
+   e:"শাকপ্রধান ভাত = শাকভাত। মাঝের পদ লোপ পেয়েছে।"},
+  {q:"‘রাজপুত্র’ কোন সমাস?",w:"রাজপুত্র",
+   o:["ষষ্ঠী তৎপুরুষ","কর্মধারয়","দ্বন্দ্ব","সপ্তমী তৎপুরুষ"],a:"ষষ্ঠী তৎপুরুষ",
+   e:"রাজার পুত্র = রাজপুত্র। পূর্বপদে ষষ্ঠী বিভক্তি (র) লোপ পেয়েছে।"},
+  {q:"‘বিপদাপন্ন’ কোন সমাস?",w:"বিপদাপন্ন",
+   o:["দ্বিতীয়া তৎপুরুষ","তৃতীয়া তৎপুরুষ","পঞ্চমী তৎপুরুষ","ষষ্ঠী তৎপুরুষ"],a:"দ্বিতীয়া তৎপুরুষ",
+   e:"বিপদকে আপন্ন = বিপদাপন্ন। ‘কে’ বিভক্তি লোপ, তাই দ্বিতীয়া তৎপুরুষ।"},
+  {q:"‘মনগড়া’ কোন সমাস?",w:"মনগড়া",
+   o:["তৃতীয়া তৎপুরুষ","দ্বিতীয়া তৎপুরুষ","চতুর্থী তৎপুরুষ","সপ্তমী তৎপুরুষ"],a:"তৃতীয়া তৎপুরুষ",
+   e:"মনের দ্বারা গড়া = মনগড়া। ‘দ্বারা’ অর্থে তৃতীয়া তৎপুরুষ।"},
+  {q:"‘যুপকাষ্ঠ’ কোন সমাস?",w:"যুপকাষ্ঠ",
+   o:["চতুর্থী তৎপুরুষ","তৃতীয়া তৎপুরুষ","পঞ্চমী তৎপুরুষ","ষষ্ঠী তৎপুরুষ"],a:"চতুর্থী তৎপুরুষ",
+   e:"যুপের জন্য কাষ্ঠ = যুপকাষ্ঠ। ‘জন্য’ অর্থে চতুর্থী তৎপুরুষ।"},
+  {q:"‘বিলাতফেরত’ কোন সমাস?",w:"বিলাতফেরত",
+   o:["পঞ্চমী তৎপুরুষ","চতুর্থী তৎপুরুষ","সপ্তমী তৎপুরুষ","দ্বিতীয়া তৎপুরুষ"],a:"পঞ্চমী তৎপুরুষ",
+   e:"বিলাত থেকে ফেরত = বিলাতফেরত। ‘থেকে’ অর্থে পঞ্চমী তৎপুরুষ।"},
+  {q:"‘গাছপাকা’ কোন সমাস?",w:"গাছপাকা",
+   o:["সপ্তমী তৎপুরুষ","পঞ্চমী তৎপুরুষ","তৃতীয়া তৎপুরুষ","ষষ্ঠী তৎপুরুষ"],a:"সপ্তমী তৎপুরুষ",
+   e:"গাছে পাকা = গাছপাকা। ‘এ’ বিভক্তি (অধিকরণ) লোপ, তাই সপ্তমী তৎপুরুষ।"},
+  {q:"‘অনাচার’ কোন সমাস?",w:"অনাচার",
+   o:["নঞ তৎপুরুষ","উপপদ তৎপুরুষ","নিত্য সমাস","প্রাদি সমাস"],a:"নঞ তৎপুরুষ",
+   e:"নয় আচার = অনাচার। নঞর্থক (না-বাচক) পূর্বপদ, তাই নঞ তৎপুরুষ।"},
+  {q:"‘কুম্ভকার’ কোন সমাস?",w:"কুম্ভকার",
+   o:["উপপদ তৎপুরুষ","ষষ্ঠী তৎপুরুষ","কর্মধারয়","দ্বিগু"],a:"উপপদ তৎপুরুষ",
+   e:"কুম্ভ করে যে = কুম্ভকার। কৃদন্ত পদের সঙ্গে উপপদের সমাস, তাই উপপদ তৎপুরুষ।"},
+  {q:"‘পঙ্কজ’ কোন সমাস?",w:"পঙ্কজ",
+   o:["উপপদ তৎপুরুষ","সপ্তমী তৎপুরুষ","নঞ তৎপুরুষ","রূপক কর্মধারয়"],a:"উপপদ তৎপুরুষ",
+   e:"পঙ্কে জন্মে যা = পঙ্কজ। ‘জ’ কৃদন্ত পদ, পূর্বে উপপদ থাকায় উপপদ তৎপুরুষ।"},
+  {q:"‘গ্রামান্তর’ কোন সমাস?",w:"গ্রামান্তর",
+   o:["নিত্য সমাস","দ্বিগু","ষষ্ঠী তৎপুরুষ","ইতরেতর দ্বন্দ্ব"],a:"নিত্য সমাস",
+   e:"অন্য গ্রাম = গ্রামান্তর। নিত্য সমাসের ব্যাসবাক্য নিজের পদ দিয়ে হয় না, অন্য শব্দ (অন্য) লাগে।"},
+  {q:"‘প্রপিতামহ’ কোন সমাস?",w:"প্রপিতামহ",
+   o:["প্রাদি সমাস","নিত্য সমাস","কর্মধারয়","দ্বিগু"],a:"প্রাদি সমাস",
+   e:"প্রকৃষ্ট পিতামহ = প্রপিতামহ। ‘প্র’ প্রভৃতি উপসর্গের সঙ্গে সমাস হলো প্রাদি সমাস।"},
+  {q:"নিচের কোনটি তৎপুরুষ সমাসের প্রকারভেদ নয়?",
+   o:["ইতরেতর","নঞ","উপপদ","অলুক"],a:"ইতরেতর",
+   e:"ইতরেতর হলো দ্বন্দ্ব সমাসের প্রকার। নঞ, উপপদ ও অলুক তৎপুরুষের প্রকার।"}
+];
+const TOTAL = DATA.length;
+const DURATION = 30*60;
+
+/* ---------- সাহায্যকারী ---------- */
+const bn = n => String(n).replace(/\d/g,d=>"০১২৩৪৫৬৭৮৯"[d]);
+const $ = id => document.getElementById(id);
+const fmt = s => bn(String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0"));
+/* সবার জন্য একই ক্রমে অপশন সাজানোর জন্য নির্দিষ্ট seed */
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const rand = rng(91);
+DATA.forEach(d=>{
+  const arr=d.o.slice();
+  for(let i=arr.length-1;i>0;i--){const j=Math.floor(rand()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]]}
+  d.opts=arr;
+});
+
+let picked = new Array(TOTAL).fill(null);
+let timeLeft = DURATION, tick = null, submitted = false;
+
+/* ---------- রেন্ডার ---------- */
+function build(){
+  const box=$("quiz"); box.innerHTML="";
+  DATA.forEach((d,i)=>{
+    const card=document.createElement("section");
+    card.className="q"; card.id="q"+i;
+    const fs=document.createElement("fieldset");
+    const lg=document.createElement("legend");
+    let qt=d.q;
+    if(d.w){qt=qt.replace(/‘[^’]+’( শব্দের)?/,(m,g)=>g?"এই শব্দের":"এই শব্দটি")}
+    lg.innerHTML=`<span class="n">${bn(i+1)}.</span><span class="text"></span>`;
+    lg.querySelector(".text").textContent=qt;
+    if(d.w){
+      const f=document.createElement("span"); f.className="focus"; f.textContent=d.w;
+      lg.appendChild(f);
+    }
+    fs.appendChild(lg);
+    const opts=document.createElement("div"); opts.className="opts";
+    d.opts.forEach((t,k)=>{
+      const lab=document.createElement("label"); lab.className="opt";
+      lab.innerHTML=`<input type="radio" name="q${i}" value="${k}"><span class="mark"></span>`;
+      lab.querySelector(".mark").textContent=t;
+      lab.querySelector("input").addEventListener("change",()=>{picked[i]=k;card.classList.add("answered");refresh()});
+      opts.appendChild(lab);
+    });
+    fs.appendChild(opts);
+    card.appendChild(fs);
+    box.appendChild(card);
+  });
+}
+function refresh(){
+  const n=picked.filter(v=>v!==null).length;
+  $("answered").textContent=bn(n)+"/"+bn(TOTAL);
+  $("progFill").style.width=(n/TOTAL*100)+"%";
+}
+function startTimer(){
+  clearInterval(tick);
+  $("timer").textContent=fmt(timeLeft);
+  tick=setInterval(()=>{
+    timeLeft--;
+    $("timer").textContent=fmt(Math.max(timeLeft,0));
+    $("bar").classList.toggle("low",timeLeft<=300);
+    if(timeLeft<=0){clearInterval(tick);finish(true)}
+  },1000);
+}
+
+/* ---------- জমা ও ফল ---------- */
+function finish(auto){
+  if(submitted) return;
+  const left=picked.filter(v=>v===null).length;
+  if(!auto && left>0 && !confirm(bn(left)+"টি প্রশ্নের উত্তর দেওয়া হয়নি। তবুও জমা দেবেন?")) return;
+  submitted=true; clearInterval(tick);
+  let right=0,wrong=0,skip=0;
+  DATA.forEach((d,i)=>{
+    const card=$("q"+i); card.classList.add("locked");
+    const labels=card.querySelectorAll(".opt");
+    const correctIdx=d.opts.indexOf(d.a);
+    labels.forEach((l,k)=>{
+      l.querySelector("input").disabled=true;
+      if(k===correctIdx) l.classList.add("is-right");
+      if(picked[i]===k && k!==correctIdx) l.classList.add("is-wrong");
+    });
+    let status;
+    if(picked[i]===null){skip++;status="skip"}
+    else if(picked[i]===correctIdx){right++;status="right"}
+    else{wrong++;status="wrong"}
+    card.classList.remove("answered");
+    if(status!=="skip") card.classList.add(status);
+    card.dataset.status=status;
+    const ex=document.createElement("div"); ex.className="exp";
+    ex.innerHTML=(status==="skip"?'<span class="skip">উত্তর দেননি। </span>':"")+
+      `<b>সঠিক উত্তর: </b>`;
+    ex.appendChild(document.createTextNode(d.a+"। "+d.e));
+    card.appendChild(ex);
+  });
+  const used=DURATION-Math.max(timeLeft,0);
+  const name=$("name").value.trim();
+  $("resName").textContent=name?name+"-এর ফলাফল":"ফলাফল";
+  $("resScore").innerHTML=bn(right)+'<small> / '+bn(TOTAL)+'</small>';
+  $("resRight").textContent=bn(right);
+  $("resWrong").textContent=bn(wrong);
+  $("resSkip").textContent=bn(skip);
+  $("resTime").textContent=fmt(used);
+  const pct=right/TOTAL*100;
+  $("resMsg").textContent = pct>=90?"অসাধারণ! সমাসে দারুণ দখল।":
+    pct>=70?"খুব ভালো। ভুলগুলো একবার দেখে নিন।":
+    pct>=50?"মোটামুটি। ভুল হওয়া সমাসগুলো আবার পড়ুন।":"আরও অনুশীলন দরকার। ব্যাখ্যাগুলো মন দিয়ে দেখুন।";
+  $("result").classList.remove("hidden");
+  $("submitRow").classList.add("hidden");
+  $("bar").classList.add("hidden");
+  $("result").scrollIntoView({behavior:"smooth",block:"start"});
+  window._res={name,right,wrong,skip,used};
+}
+
+function toast(t){const el=$("toast");el.textContent=t;el.classList.add("show");setTimeout(()=>el.classList.remove("show"),2000)}
+
+$("btnSubmit").addEventListener("click",()=>finish(false));
+$("btnAgain").addEventListener("click",()=>location.reload());
+let onlyWrong=false;
+$("btnWrong").addEventListener("click",()=>{
+  onlyWrong=!onlyWrong;
+  document.querySelectorAll(".q").forEach(c=>c.classList.toggle("hidden",onlyWrong && c.dataset.status==="right"));
+  $("btnWrong").textContent=onlyWrong?"সব প্রশ্ন দেখুন":"শুধু ভুলগুলো দেখুন";
+});
+$("btnCopy").addEventListener("click",async()=>{
+  const r=window._res; if(!r) return;
+  const text=`সমাস মডেল টেস্ট\nনাম: ${r.name||"—"}\nসঠিক: ${bn(r.right)}/${bn(TOTAL)}, ভুল: ${bn(r.wrong)}, উত্তর দেননি: ${bn(r.skip)}\nসময়: ${fmt(r.used)}`;
+  try{await navigator.clipboard.writeText(text);toast("ফলাফল কপি হয়েছে")}
+  catch(e){toast("কপি করা যায়নি, ফলাফল নিজে লিখে নিন")}
+});
+
+build(); refresh(); startTimer();
+</script>
+</body>
+</html>
