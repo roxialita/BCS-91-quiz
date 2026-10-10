@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="bn"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Job Exam Quiz – এক পেজে সব</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f6f7fb;--c:#fff;--t:#1d2433;--m:#667;--p:#3b5bdb;--ok:#2b9348;--no:#d62839;--b:#dde1ec}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#12151c;--c:#1c212c;--t:#e8ebf2;--m:#9aa3b5;--p:#7c93ff;--ok:#4ade80;--no:#ff6b7a;--b:#2d3445}}
+:root[data-theme="dark"]{--bg:#12151c;--c:#1c212c;--t:#e8ebf2;--m:#9aa3b5;--p:#7c93ff;--ok:#4ade80;--no:#ff6b7a;--b:#2d3445}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--t);font-family:"Noto Sans Bengali","Hind Siliguri",system-ui,sans-serif;line-height:1.6}
+.w{max-width:680px;margin:0 auto;padding:16px}
+h1{font-size:1.25rem;margin:8px 0 2px}.s{color:var(--m);font-size:.9rem}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.ch{font:inherit;font-size:.85rem;color:inherit;background:var(--c);border:1px solid var(--b);border-radius:20px;padding:5px 12px;cursor:pointer}
+.ch.on{background:var(--p);border-color:var(--p);color:#fff}
+.bar{height:6px;background:var(--b);border-radius:9px;overflow:hidden;margin:8px 0 14px}.bar i{display:block;height:100%;background:var(--p);width:0;transition:width .3s}
+.card{background:var(--c);border:1px solid var(--b);border-radius:14px;padding:14px;margin-bottom:12px}
+.q{font-weight:600;margin-bottom:10px}
+.o{display:block;width:100%;text-align:left;font:inherit;color:inherit;background:transparent;border:1px solid var(--b);border-radius:10px;padding:10px 12px;margin:6px 0;cursor:pointer}
+.o.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 15%,transparent)}
+.o.no{border-color:var(--no);background:color-mix(in srgb,var(--no) 15%,transparent)}
+.o:disabled{cursor:default}
+.btn{font:inherit;background:var(--p);color:#fff;border:0;border-radius:10px;padding:10px 18px;cursor:pointer}
+.btn.g{background:transparent;color:var(--p);border:1px solid var(--p)}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.big{font-size:2rem;font-weight:700;text-align:center}
+.stat{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:6px 0 0;font-size:.9rem;font-weight:600}
+.fb{margin-top:6px;font-size:.9rem}
+</style></head><body><div class="w">
+<h1>Job Exam Quiz – এক পেজে সব</h1>
+<div class="s" id="tot"></div>
+<div class="chips" id="chips"></div>
+<div class="stat"><div id="st"></div><div class="bar"><i id="pb"></i></div></div>
+<div id="app"></div></div>
+<script>
+const ALL=[];
+const GK=[
+["প্রাচীন বাংলার প্রথম স্বাধীন নরপতি কে?",["গোপাল","শশাঙ্ক","ধর্মপাল","বিজয় সেন"],1],
+["শশাঙ্কের রাজধানী কোথায় ছিল?",["পাটলিপুত্র","গৌড়","কর্ণসুবর্ণ","লখনৌতি"],2],
+["পাল বংশের প্রতিষ্ঠাতা কে?",["ধর্মপাল","দেবপাল","শশাঙ্ক","গোপাল"],3],
+["পাহাড়পুরের সোমপুর বিহার কে নির্মাণ করেন?",["ধর্মপাল","গোপাল","দেবপাল","মহীপাল"],0],
+["বাংলায় কৌলীন্য প্রথার প্রবর্তক কে?",["বিজয় সেন","বল্লাল সেন","লক্ষ্মণ সেন","শশাঙ্ক"],1],
+["সেন বংশের শেষ রাজা কে?",["বল্লাল সেন","বিজয় সেন","কেশব সেন","লক্ষ্মণ সেন"],3],
+["বখতিয়ার খলজি কত সালে বাংলা জয় করেন?",["১২০৪","১২০৬","১১৯২","১৩৪২"],0],
+["প্রাচীন জনপদ ‘পুণ্ড্র’ বর্তমানে কোন অঞ্চল?",["কুমিল্লা ও নোয়াখালী","সিলেট ও চট্টগ্রাম","বগুড়া, দিনাজপুর, রাজশাহী ও রংপুর","বরিশাল ও খুলনা"],2],
+["প্রাচীন জনপদ ‘সমতট’ বর্তমানে কোন অঞ্চল?",["বগুড়া","কুমিল্লা ও নোয়াখালী","সিলেট","রংপুর"],1],
+["প্রাচীন জনপদ ‘হরিকেল’ কোন অঞ্চলে?",["রাজশাহী","খুলনা","বরিশাল","সিলেট, চট্টগ্রাম ও পার্বত্য চট্টগ্রাম"],3],
+["‘চন্দ্রদ্বীপ’ জনপদ বর্তমানে কোন অঞ্চল?",["বৃহত্তর বরিশাল","বৃহত্তর কুমিল্লা","বৃহত্তর ময়মনসিংহ","বৃহত্তর দিনাজপুর"],0],
+["‘তাম্রলিপ্তি’ জনপদ বর্তমানে কোথায়?",["বগুড়া","পশ্চিমবঙ্গের মেদিনীপুর","চট্টগ্রাম","মুর্শিদাবাদ"],1],
+["বাঙালি জাতির প্রধান অংশ কোন মূল জাতিগোষ্ঠীর অন্তর্ভুক্ত?",["আর্য","দ্রাবিড়","মঙ্গোলীয়","অস্ট্রিক"],3],
+["মৌর্য সাম্রাজ্যের প্রতিষ্ঠাতা কে?",["অশোক","বিন্দুসার","চন্দ্রগুপ্ত মৌর্য","শশাঙ্ক"],2],
+["‘অর্থশাস্ত্র’ গ্রন্থের রচয়িতা কে?",["কৌটিল্য (চাণক্য)","মেগাস্থিনিস","কালিদাস","ফা-হিয়েন"],0],
+["কলিঙ্গ যুদ্ধের পর কোন সম্রাট বৌদ্ধ ধর্ম গ্রহণ করেন?",["চন্দ্রগুপ্ত","অশোক","হর্ষবর্ধন","শশাঙ্ক"],1],
+["দিল্লির প্রথম মুসলিম সুলতান কে?",["ইলতুতমিশ","বলবন","কুতুবুদ্দিন আইবেক","বখতিয়ার খলজি"],2],
+["বাংলার প্রথম স্বাধীন সুলতান কে?",["শামসুদ্দিন ইলিয়াস শাহ","ফখরুদ্দীন মুবারক শাহ","হোসেন শাহ","গিয়াসউদ্দিন আজম শাহ"],1],
+["সমগ্র বাংলার প্রথম স্বাধীন সুলতান কে?",["শামসুদ্দিন ইলিয়াস শাহ","নুসরত শাহ","বখতিয়ার খলজি","শেরশাহ"],0],
+["পানিপথের প্রথম যুদ্ধ কত সালে সংঘটিত হয়?",["১৫২৬","১৫৫৬","১৭৫৭","১৫২৭"],0],
+["পানিপথের প্রথম যুদ্ধ কাদের মধ্যে হয়?",["আকবর ও হিমু","বাবর ও ইব্রাহিম লোদি","হুমায়ুন ও শেরশাহ","বাবর ও রানা সঙ্গ"],1],
+["মুঘল সাম্রাজ্যের প্রতিষ্ঠাতা কে?",["আকবর","হুমায়ুন","শাহজাহান","বাবর"],3],
+["পানিপথের দ্বিতীয় যুদ্ধ (১৫৫৬) কাদের মধ্যে হয়?",["বাবর ও ইব্রাহিম লোদি","হুমায়ুন ও শেরশাহ","আকবর ও হিমু","আকবর ও রানা প্রতাপ"],2],
+["‘সড়ক-ই-আজম’ (গ্র্যান্ড ট্রাঙ্ক রোড) কে নির্মাণ করেন?",["আকবর","শেরশাহ","বাবর","শাহজাহান"],1],
+["শেরশাহ প্রবর্তিত রৌপ্য মুদ্রার নাম কী?",["দিনার","টাকা","রুপি","দিরহাম"],2],
+["আকবরের সময়ের রাজস্বমন্ত্রী কে ছিলেন?",["বীরবল","আবুল ফজল","মানসিংহ","টোডরমল"],3],
+["‘আইন-ই-আকবরী’ গ্রন্থের রচয়িতা কে?",["আবুল ফজল","ফৈজি","বদায়ুনি","টোডরমল"],0],
+["তাজমহল কে নির্মাণ করেন?",["আকবর","জাহাঙ্গীর","শাহজাহান","আওরঙ্গজেব"],2],
+["১৬১০ সালে ঢাকাকে বাংলার রাজধানী ঘোষণা করেন কে?",["মানসিংহ","ইসলাম খান","শায়েস্তা খান","মীর জুমলা"],1],
+["‘দীন-ই-ইলাহি’ ধর্মমত কে প্রবর্তন করেন?",["জাহাঙ্গীর","হুমায়ুন","আকবর","শেরশাহ"],2]
+];
+GK.forEach(x=>ALL.push({s:"GK",q:x[0],o:x[1],a:x[2]}));
+const T=["দ্বন্দ্ব","বহুব্রীহি","কর্মধারয়","দ্বিগু","অব্যয়ীভাব","নিত্য","উপপদ তৎপুরুষ","নঞ্ তৎপুরুষ","ষষ্ঠী তৎপুরুষ","সপ্তমী তৎপুরুষ","তৃতীয়া তৎপুরুষ","দ্বিতীয়া তৎপুরুষ","চতুর্থী তৎপুরুষ","পঞ্চমী তৎপুরুষ","রূপক কর্মধারয়","উপমিত কর্মধারয়","উপমান কর্মধারয়","মধ্যপদলোপী কর্মধারয়","অলুক দ্বন্দ্ব"];
+const S=[["মা-বাবা",0],["ভাইবোন",0],["জমাখরচ",0],["হাটবাজার",0],["পিতামাতা",0],["দুধেভাতে",18],
+["আমরণ",4],["প্রতিদিন",4],["যথাসাধ্য",4],["আজন্ম",4],["উপকূল",4],["যথাবিধি",4],["অনুক্ষণ",4],
+["ত্রিফলা",3],["পঞ্চবটী",3],["সপ্তাহ",3],["চৌরাস্তা",3],["শতাব্দী",3],
+["নীলকণ্ঠ",1],["দশানন",1],["বীণাপাণি",1],["হাতাহাতি",1],["লাঠালাঠি",1],
+["নীলাকাশ",2],["মহারাজ",2],["কাঁচামিঠা",2],
+["সিংহাসন",17],["শাকভাত",17],["মুখচন্দ্র",14],["চরণকমল",14],["পুরুষসিংহ",15],["তুষারশুভ্র",16],
+["কুম্ভকার",6],["জলদ",6],["পঙ্কজ",6],["অনাচার",7],["অজানা",7],["অসুখ",7],
+["রাজপুত্র",8],["রাজপথ",8],["গাছপাকা",9],["বনবাস",9],["তুষারাবৃত",10],["শরণাগত",11],["গৃহগত",11],["যূপকাষ্ঠ",12],["পদচ্যুত",13],["ভয়ভীত",13],
+["গ্রামান্তর",5],["দেশান্তর",5],
+["ঘরবাড়ি",0],["দিনরাত",0],["সুখদুঃখ",0],["প্রতিক্ষণ",4],["নবরত্ন",3],["পীতাম্বর",1],["মৃগনয়না",1],["ঘনশ্যাম",16],["মনমাঝি",14],["ক্রোধানল",14],["মহর্ষি",2],["অচেনা",7],["মনগড়া",10],["বিলাতফেরত",13],["দেশত্যাগ",11]];
+S.forEach((x,i)=>{let d=[],k=0;const t=T[x[1]];
+ while(d.length<3){const c=T[(i*7+k*5+3)%T.length];k++;if(c!==t&&!d.includes(c))d.push(c);}
+ const p=i%4;d.splice(p,0,t);
+ ALL.push({s:"বাংলা সমাস",q:"‘"+x[0]+"’ — কোন সমাস?",o:d,a:p});});
+const P=(s,a)=>a.forEach((r,i)=>{const [q,t,...d]=r.split('|');const o=d.slice(0,3),p=(i+1)%4;o.splice(p,0,t);ALL.push({s,q,o,a:p});});
+P("গণিত",[
+"৮০০ এর ১২.৫% = কত?|১০০|৮০|১২৫|১২",
+"কোনো সংখ্যার ২০% = ৪০ হলে সংখ্যাটি কত?|২০০|১৬০|২৫০|৮০",
+"৫০০ টাকা বেড়ে ৫৫০ টাকা হলে শতকরা বৃদ্ধি কত?|১০%|৫%|১২%|১৫%",
+"দাম ২০% বেড়ে ১২০ টাকা হলে আগের দাম কত?|১০০ টাকা|৯৬ টাকা|১০০.৫০ টাকা|১০৫ টাকা",
+"কোনো সংখ্যার ৪০% এর ৫০% = ৩০ হলে সংখ্যাটি কত?|১৫০|১২০|২০০|৬০",
+"A এর বেতন B এর চেয়ে ২৫% বেশি। B এর বেতন A এর চেয়ে কত % কম?|২০%|২৫%|১৫%|৩০%",
+"আয়তক্ষেত্রের দৈর্ঘ্য ১০% বাড়ালে ও প্রস্থ ১০% কমালে ক্ষেত্রফলের পরিবর্তন কত?|১% কমে|অপরিবর্তিত|১% বাড়ে|১০% কমে",
+"৩০০ এর ৪০% + ২০০ এর ৩০% = কত?|১৮০|১৫০|২১০|১২০",
+"বর্গক্ষেত্রের বাহু ১০% বাড়লে ক্ষেত্রফল শতকরা কত বাড়ে?|২১%|২০%|১০%|১১%",
+"২০০ টাকায় কিনে ২৫০ টাকায় বিক্রি করলে শতকরা লাভ কত?|২৫%|২০%|৫০%|১৫%",
+"৪০০ টাকার জিনিস ২০% ক্ষতিতে বিক্রি করলে বিক্রয়মূল্য কত?|৩২০ টাকা|৩৮০ টাকা|৩৬০ টাকা|৪২০ টাকা",
+"পরীক্ষায় ৮০০ জনের ৬০% পাস করলে কতজন ফেল করেছে?|৩২০|৪৮০|২৪০|২০০",
+"দুটি সংখ্যার অনুপাত ৩:৫ হলে ছোটটি বড়টির কত শতাংশ?|৬০%|৫০%|৭০%|৩৩%",
+"দাম ২৫% কমলে ব্যয় অপরিবর্তিত রাখতে ভোগ শতকরা কত বাড়াতে হবে?|৩৩⅓%|২৫%|২০%|৪০%",
+"১২০ এর কত % হলে ৩০ হয়?|২৫%|২০%|৩০%|৪০%",
+"৩/৫ কে শতকরায় প্রকাশ করলে কত হয়?|৬০%|৩৫%|৫৫%|৭৫%",
+"বেতন ১০% বেড়ে পরে ১০% কমলে মোট পরিবর্তন কত?|১% কমে|অপরিবর্তিত|১% বাড়ে|২% কমে",
+"কোনো সংখ্যার ২৫% = ১৫ হলে ওই সংখ্যার ৪০% কত?|২৪|২০|৩০|১৮",
+"৩০% নম্বর পেলে পাস। একজন ১৫০ পেয়ে ৩০ নম্বরে ফেল করলে পূর্ণমান কত?|৬০০|৫০০|৫৫০|৬৫০",
+"০.২৫ কে শতকরায় প্রকাশ করলে কত হয়?|২৫%|২.৫%|০.২৫%|২৫০%"]);
+P("English Verb",[
+"In 'She likes reading books', the non-finite verb is —|reading|likes|She|books",
+"Finite verb এর বৈশিষ্ট্য কোনটি?|Subject ও tense অনুযায়ী রূপ বদলায়|সবসময় -ing যুক্ত থাকে|সবসময় to দিয়ে শুরু হয়|কোনো tense থাকে না",
+"'The sun rises in the east.' — finite verb কোনটি?|rises|sun|east|The",
+"Non-finite verb কত প্রকার?|৩|২|৪|৫",
+"'I want to eat.' — 'to eat' কী?|Infinitive|Finite verb|Gerund|Participle",
+"He ___ to school daily.|goes|go|going|to go",
+"Which is NOT an auxiliary verb?|run|do|be|have",
+"'She is reading.' — 'is' কী ধরনের verb?|Auxiliary verb|Principal verb|Modal verb|Linking verb",
+"Which is a modal verb?|can|do|have|be",
+"He ___ swim when he was young.|could|can|may|must",
+"___ I come in, sir? (অনুমতি)|May|Shall|Will|Must",
+"You ___ obey your parents. (বাধ্যবাধকতা)|must|may|might|can",
+"It ___ rain tomorrow. (সম্ভাবনা)|may|shall|ought|need",
+"Modal verb এর পর verb এর কোন form বসে?|Base form|Past form|-ing form|Past participle",
+"Which is NOT a semi-modal verb?|must|dare|need|used to",
+"He ___ to smoke. (অতীত অভ্যাস)|used|use|uses|using",
+"Dare he ___ the lion?|face|faces|to face|facing",
+"You need ___ worry. (modal need)|not|to not|nor|no",
+"I ___ to go now. (বাধ্যবাধকতা)|have|has|am|is",
+"'Birds fly.' — 'fly' কোন ধরনের verb?|Intransitive|Transitive|Linking|Auxiliary",
+"'He reads a book.' — 'reads' কী?|Transitive verb|Intransitive verb|Linking verb|Modal verb",
+"'The sun rises.' — 'rises' কী?|Intransitive verb|Transitive verb|Causative verb|Factitive verb",
+"Transitive verb এর জন্য কী প্রয়োজন?|Object|Complement|Adverb|Adjective",
+"Which verb is transitive?|writes|goes|comes|sleeps",
+"The sun ___ in the east.|rises|raises|rised|raised",
+"The soldiers ___ the flag.|raised|rose|risen|rising",
+"The teacher made the students ___ the lesson.|learn|to learn|learning|learned",
+"He let me ___.|go|to go|going|gone",
+"I got my work ___.|done|do|did|doing",
+"Mother had the servant ___ the room.|clean|to clean|cleaning|cleaned",
+"'He lived a happy life.' — 'life' কী?|Cognate object|Factitive object|Indirect object|Complement",
+"'He fought a good fight.' — cognate object কোনটি?|fight|fought|good|He",
+"'He dreamed a dream.' — এখানে 'dream' কী?|Cognate object|Direct object|Adverb|Subject",
+"'They made him king.' — 'king' কী?|Objective complement|Subject complement|Cognate object|Adverb",
+"'The people elected him president.' — 'elected' কোন ধরনের verb?|Factitive verb|Linking verb|Cognate verb|Auxiliary verb",
+"Which is a linking verb?|seem|run|eat|write",
+"'She looks beautiful.' — 'looks' কী?|Linking verb|Transitive verb|Auxiliary verb|Modal verb",
+"'He became a doctor.' — 'became' কী?|Linking verb|Modal verb|Causative verb|Cognate verb",
+"'The milk turned sour.' — 'turned' কী?|Linking verb|Transitive verb|Modal verb|Auxiliary verb",
+"'Swimming is good exercise.' — 'Swimming' কী?|Gerund|Present participle|Infinitive|Past participle",
+"I am fond of ___.|singing|sing|to sing|sang",
+"He is looking forward to ___ you.|seeing|see|saw|to see",
+"I am used to ___ early.|getting up|get up|got up|to get up",
+"It is no use ___.|crying|cry|to cry|cried",
+"He avoided ___ the question.|answering|answer|to answer|answered",
+"She enjoys ___ music.|listening to|to listen|listen|listened",
+"I want ___ a doctor.|to be|being|be|been",
+"He decided ___ abroad.|to go|going|go|went",
+"Participle কত প্রকার?|৩|২|৪|৫",
+"'Seeing the tiger, he ran away.' — 'Seeing' কী?|Present participle|Gerund|Infinitive|Past participle",
+"The ___ glass was thrown away.|broken|breaking|break|broke",
+"He cannot help ___.|laughing|laugh|to laugh|laughed",
+"Would you mind ___ the window?|closing|close|to close|closed",
+"Give up = ?|abandon|start|take|allow",
+"Put off = ?|postpone|wear|remove|accept",
+"Look after = ?|take care of|search|ignore|follow",
+"Call off = ?|cancel|invite|telephone|arrange",
+"Turn down = ?|reject|accept|lower|fold",
+"Carry out = ?|perform|carry|remove|stop",
+"Break out = ?|begin suddenly|escape|destroy|repair",
+"Run out of = ?|have no more of|run away|meet|exceed",
+"Put up with = ?|tolerate|build|offer|stay",
+"Look into = ?|investigate|enter|see|ignore",
+"Bring up = ?|rear|raise a hand|mention rarely|stop",
+"Set off = ?|start a journey|decorate|stop|arrive"]);
+P("GK",[
+"বাংলা সন প্রবর্তন করেন কে?|আকবর|শেরশাহ|শাহজাহান|হুসেন শাহ",
+"শেরশাহের আসল নাম কী?|ফরিদ খান|শের খান|ইব্রাহিম খান|ফতেহ খান",
+"পানিপথের তৃতীয় যুদ্ধ কত সালে সংঘটিত হয়?|১৭৬১|১৫২৬|১৫৫৬|১৭৫৭",
+"খানুয়ার যুদ্ধে (১৫২৭) বাবর কাকে পরাজিত করেন?|রানা সংগ্রাম সিংহ|ইব্রাহিম লোদি|হিমু|শেরশাহ",
+"মুঘল সম্রাট জাহাঙ্গীরের স্ত্রীর নাম কী?|নূরজাহান|মমতাজ মহল|জোধাবাঈ|জাহানারা",
+"ঢাকার লালবাগ কেল্লার নির্মাণ কাজ শুরু করেন কে?|শাহজাদা মুহাম্মদ আজম|শায়েস্তা খান|ইসলাম খান|মীর জুমলা",
+"কার আমলে বাংলায় টাকায় আট মণ চাল পাওয়া যেত?|শায়েস্তা খান|মীর জুমলা|ইসলাম খান|মুর্শিদকুলি খান",
+"পলাশীর যুদ্ধ কত সালে সংঘটিত হয়?|১৭৫৭|১৭৬৪|১৭৯৩|১৮৫৭",
+"পলাশীর যুদ্ধে ইংরেজ বাহিনীর নেতৃত্বে ছিলেন কে?|রবার্ট ক্লাইভ|ওয়ারেন হেস্টিংস|লর্ড কর্নওয়ালিস|লর্ড কার্জন",
+"পলাশীর যুদ্ধে সিরাজউদ্দৌলার সেনাপতি যিনি বিশ্বাসঘাতকতা করেন?|মীর জাফর|মোহনলাল|মীর মদন|ঘসেটি বেগম",
+"বঙ্গভঙ্গ কত সালে হয়?|১৯০৫|১৯১১|১৯৪৭|১৮৫৭",
+"চর্যাপদ আবিষ্কার করেন কে?|হরপ্রসাদ শাস্ত্রী|দীনেশচন্দ্র সেন|ড. মুহম্মদ শহীদুল্লাহ|রবীন্দ্রনাথ ঠাকুর",
+"মহাস্থানগড় প্রাচীন কোন জনপদে অবস্থিত ছিল?|পুণ্ড্র|সমতট|হরিকেল|বঙ্গ",
+"ময়নামতি প্রাচীন কোন জনপদের অংশ ছিল?|সমতট|পুণ্ড্র|গৌড়|হরিকেল",
+"পাহাড়পুর বৌদ্ধ বিহার কোন জেলায় অবস্থিত?|নওগাঁ|বগুড়া|কুমিল্লা|দিনাজপুর",
+"হোসেন শাহী বংশের প্রতিষ্ঠাতা কে?|আলাউদ্দিন হোসেন শাহ|নুসরত শাহ|ইলিয়াস শাহ|গিয়াসউদ্দিন আজম শাহ",
+"মেগাস্থিনিস কোন দেশের পরিব্রাজক ছিলেন?|গ্রিস|চীন|মরক্কো|ইতালি",
+"চীনা পরিব্রাজক হিউয়েন সাং ভারতে কোন রাজার আমলে আসেন?|হর্ষবর্ধন|অশোক|শশাঙ্ক|ধর্মপাল",
+"দিল্লির প্রথম মহিলা শাসক কে ছিলেন?|সুলতানা রাজিয়া|নূরজাহান|মমতাজ|জাহানারা",
+"ইবনে বতুতা কোন দেশের পরিব্রাজক ছিলেন?|মরক্কো|চীন|গ্রিস|ইতালি"]);
+const SUBJ=["সব","বাংলা সমাস","English Verb","গণিত","GK"];
+let sub="সব",list=[],res={};
+const app=document.getElementById('app'),pb=document.getElementById('pb');
+const L=['ক','খ','গ','ঘ'];
+function chips(){document.getElementById('chips').innerHTML=SUBJ.map(s=>{const n=s=="সব"?ALL.length:ALL.filter(x=>x.s==s).length;return '<button class="ch'+(s==sub?' on':'')+'" onclick="setS(\''+s+'\')">'+s+' ('+n+')</button>'}).join('')+'<button class="ch" onclick="shuf()">🔀 Shuffle</button>';
+ document.getElementById('tot').textContent='মোট '+ALL.length+'টি প্রশ্ন · যেকোনোটা বেছে উত্তর দিন';}
+function setS(s){sub=s;list=ALL.filter(x=>s=="সব"||x.s==s);res={};chips();show();}
+function shuf(){list=list.slice().sort(()=>Math.random()-.5);res={};show();}
+function stat(){const ks=Object.keys(res),d=ks.length,c=ks.filter(n=>res[n]==list[n].a).length;
+ document.getElementById('st').textContent='উত্তর: '+d+' / '+list.length+' · ✅ '+c+' · ❌ '+(d-c);
+ pb.style.width=(list.length?d/list.length*100:0)+'%';}
+function show(){
+ app.innerHTML=list.map((q,n)=>'<div class="card"><div class="s">'+q.s+' · প্রশ্ন '+(n+1)+'</div><div class="q">'+q.q+'</div><div id="c'+n+'">'+
+  q.o.map((o,k)=>'<button class="o" onclick="pick('+n+','+k+')">'+L[k]+'. '+o+'</button>').join('')+'</div><div class="fb" id="f'+n+'"></div></div>').join('')
+  +'<div style="text-align:center;margin:16px 0"><button class="btn" onclick="setS(sub)">আবার শুরু করুন</button></div>';
+ stat();}
+function pick(n,k){
+ if(res[n]!==undefined)return;res[n]=k;const a=list[n].a;
+ document.querySelectorAll('#c'+n+' .o').forEach((b,j)=>{b.disabled=true;if(j==a)b.classList.add('ok');else if(j==k)b.classList.add('no');});
+ document.getElementById('f'+n).textContent=k==a?'✅ সঠিক':'❌ সঠিক উত্তর: '+L[a];
+ stat();}
+setS("সব");
+</script></body></html>
